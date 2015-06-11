@@ -104,7 +104,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
 
             drawSeesaw(g2D);
         }
-        
+        /* the seesaw structure, */
         public void drawSeesaw(Graphics2D g2D){
             line = new Line2D.Double(this.getWidth() / 8, this.getHeight() / 2, this.getWidth() / 8 * 7, this.getHeight() / 2);
             
