@@ -1011,35 +1011,75 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     /*
     Signal processing methods.
     */
+    /*Peilun added. previous version of normalisation generating unfair pairing
+      if the actural signal of first one is tiny larger than 100 but the second
+      one is a bit smaller, the original normalization method would give a 
+      result of second > first, and there is no exception in */
     private void normaliseValues()
     {
+        /*less than zero case*/
+        if (firstSubjectSignal <= 0 || secondSubjectSignal <= 0)
+        {
+        
+            if (firstSubjectSignal <= 0)
+                firstSubjectSignal = 0;
+            
+            if (secondSubjectSignal <= 0)
+                secondSubjectSignal = 0;           
+        }
+        /*restructure if statement*/
         if (firstSubjectSignal > 0 && secondSubjectSignal > 0)
         {
             // Normalise values to tenths.
             if (firstSubjectSignal < 1)
             {    
+                if (secondSubjectSignal >= 1)
+                {                
+                    secondSubjectSignal = 100;
+                }
+                else 
+                {
+                    secondSubjectSignal = secondSubjectSignal * 100.0;
+                }
                 firstSubjectSignal = firstSubjectSignal * 100.0;
+            }
+            else if (firstSubjectSignal < 10)
+            {
+                if (secondSubjectSignal >= 10)
+                {
+                    secondSubjectSignal = 100;
+                }
+                else
+                {
+                    secondSubjectSignal = secondSubjectSignal * 10.0;
+                }
+                
+                firstSubjectSignal = firstSubjectSignal * 10.0;
+            }
+            else if (firstSubjectSignal > 100)
+            {
+                if (secondSubjectSignal < 100)
+                {
+                    secondSubjectSignal = 9;
+                }
+                else
+                {
+                    secondSubjectSignal = secondSubjectSignal / 10.0;
+                }
+                
+                firstSubjectSignal = firstSubjectSignal / 10.0;
             }
             
             if (secondSubjectSignal < 1)
             {
                 secondSubjectSignal = secondSubjectSignal * 100.0;
-            }
-            
-            if (firstSubjectSignal < 10 && firstSubjectSignal >= 1)
-            {
-                firstSubjectSignal = firstSubjectSignal * 10.0;
-            }
-            
-            if (secondSubjectSignal < 10 && secondSubjectSignal >= 1)
+            }           
+            else if (secondSubjectSignal < 10 && secondSubjectSignal >= 1)
             {
                 secondSubjectSignal = secondSubjectSignal * 10.0;
             }
             
-            if (firstSubjectSignal > 100)
-            {
-                firstSubjectSignal = firstSubjectSignal / 10.0;
-            }
+            
             
             if (secondSubjectSignal > 100)
             {
