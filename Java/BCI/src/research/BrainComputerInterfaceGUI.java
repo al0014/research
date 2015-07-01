@@ -1017,17 +1017,20 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
       result of second > first, and there is no exception in */
     private void normaliseValues()
     {
-        /*less than zero case*/
+        /*Less than zero case.*/
         if (firstSubjectSignal <= 0 || secondSubjectSignal <= 0)
         {
-        
             if (firstSubjectSignal <= 0)
+            {
                 firstSubjectSignal = 0;
+            }
             
             if (secondSubjectSignal <= 0)
-                secondSubjectSignal = 0;           
+            {    
+                secondSubjectSignal = 0;
+            }           
         }
-        /*restructure if statement*/
+        /*Restructure if statement.*/
         if (firstSubjectSignal > 0 && secondSubjectSignal > 0)
         {
             // Normalise values to tenths.
@@ -1078,8 +1081,6 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             {
                 secondSubjectSignal = secondSubjectSignal * 10.0;
             }
-            
-            
             
             if (secondSubjectSignal > 100)
             {
