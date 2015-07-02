@@ -1011,10 +1011,14 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     /*
     Signal processing methods.
     */
-    /*Peilun added. previous version of normalisation generating unfair pairing
-      if the actural signal of first one is tiny larger than 100 but the second
-      one is a bit smaller, the original normalization method would give a 
-      result of second > first, and there is no exception in */
+    /*
+    Peilun added. previous version of normalisation generating unfair pairing
+    The new normalization took place on Sub1, use the strength of Sub2 to 
+    compare, with a auto scale function,in this situation, Sub1 and Sub2 will always have
+    a output [10,100]. the exception value over 100 may conduct
+    overscale position(if previous input>1000) in minor situation, like putting
+    electrode on a strong power of elec-megnetitude environment.
+    */
     private void normaliseValues()
     {
         /*Less than zero case.*/
@@ -1045,6 +1049,18 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     secondSubjectSignal = secondSubjectSignal * 100.0;
                 }
                 firstSubjectSignal = firstSubjectSignal * 100.0;
+                /*
+                too small situation
+                */
+                if (firstSubjectSignal < 10)
+                {
+                    firstSubjectSignal = 9;
+                }
+                if (secondSubjectSignal < 10)
+                {
+                    secondSubjectSignal = 9;
+                }
+                    
             }
             else if (firstSubjectSignal < 10)
             {
@@ -1056,7 +1072,14 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                 {
                     secondSubjectSignal = secondSubjectSignal * 10.0;
                 }
-                
+                /*
+                in situation of Sub2 < 1, when we enhance Sub1(between [1,9]),
+                give a constant value of 9 to Sub2.
+                */
+                if (secondSubjectSignal < 10)
+                {
+                    secondSubjectSignal = 9;
+                }
                 firstSubjectSignal = firstSubjectSignal * 10.0;
             }
             else if (firstSubjectSignal > 100)
@@ -1068,23 +1091,19 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                 else
                 {
                     secondSubjectSignal = secondSubjectSignal / 10.0;
-                }
-                
+                }              
                 firstSubjectSignal = firstSubjectSignal / 10.0;
-            }
-            
-            if (secondSubjectSignal < 1)
-            {
-                secondSubjectSignal = secondSubjectSignal * 100.0;
-            }           
-            else if (secondSubjectSignal < 10 && secondSubjectSignal >= 1)
-            {
-                secondSubjectSignal = secondSubjectSignal * 10.0;
-            }
-            
-            if (secondSubjectSignal > 100)
-            {
-                secondSubjectSignal = secondSubjectSignal / 10.0;
+                /*
+                too large situation
+                */
+                if (firstSubjectSignal > 100)
+                {
+                    firstSubjectSignal = 100;
+                }
+                if (secondSubjectSignal > 100)
+                {
+                    secondSubjectSignal = 100;
+                }
             }
         }
     }
