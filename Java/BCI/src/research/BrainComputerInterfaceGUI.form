@@ -145,13 +145,13 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanelFirstSubject" pref="221" max="32767" attributes="0"/>
+              <Component id="jPanelFirstSubject" pref="218" max="32767" attributes="0"/>
               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Component id="jProgressBarFirstSubjectScore" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jProgressBarCollaborativeScore" max="32767" attributes="0"/>
-                  <Component id="jPanelActivityArea" pref="745" max="32767" attributes="0"/>
+                  <Component id="jPanelActivityArea" pref="741" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="FirstValue" max="32767" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
@@ -163,7 +163,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jProgressBarSecondSubjectScore" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jPanelSecondSubject" pref="221" max="32767" attributes="0"/>
+                      <Component id="jPanelSecondSubject" pref="220" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="174" max="-2" attributes="0"/>
@@ -227,7 +227,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jProgressBarFirstSubject" pref="189" max="32767" attributes="0"/>
+                  <Component id="jProgressBarFirstSubject" pref="186" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -276,7 +276,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="733" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="729" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -336,11 +336,24 @@
     <Component class="javax.swing.JProgressBar" name="jProgressBarFirstSubjectScore">
       <Properties>
         <Property name="orientation" type="int" value="1"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
+            <BevelBorder/>
+          </Border>
+        </Property>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Default Cursor"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JProgressBar" name="jProgressBarSecondSubjectScore">
       <Properties>
         <Property name="orientation" type="int" value="1"/>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
+            <BevelBorder/>
+          </Border>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonReset">

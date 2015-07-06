@@ -425,7 +425,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             jPanelFirstSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelFirstSubjectLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBarFirstSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                .addComponent(jProgressBarFirstSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanelFirstSubjectLayout.setVerticalGroup(
@@ -444,7 +444,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         jPanelActivityArea.setLayout(jPanelActivityAreaLayout);
         jPanelActivityAreaLayout.setHorizontalGroup(
             jPanelActivityAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 733, Short.MAX_VALUE)
+            .addGap(0, 729, Short.MAX_VALUE)
         );
         jPanelActivityAreaLayout.setVerticalGroup(
             jPanelActivityAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -477,8 +477,11 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         );
 
         jProgressBarFirstSubjectScore.setOrientation(1);
+        jProgressBarFirstSubjectScore.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jProgressBarFirstSubjectScore.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jProgressBarSecondSubjectScore.setOrientation(1);
+        jProgressBarSecondSubjectScore.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jButtonReset.setText("Reset");
         jButtonReset.setEnabled(false);
@@ -586,13 +589,13 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanelFirstSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                .addComponent(jPanelFirstSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jProgressBarFirstSubjectScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jProgressBarCollaborativeScore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanelActivityArea, javax.swing.GroupLayout.DEFAULT_SIZE, 745, Short.MAX_VALUE)
+                    .addComponent(jPanelActivityArea, javax.swing.GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(FirstValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -602,7 +605,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jProgressBarSecondSubjectScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jPanelSecondSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE))
+                        .addComponent(jPanelSecondSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(174, 174, 174)
                         .addComponent(jButtonReset, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1194,8 +1197,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     {
                         // Display absolute difference.
                         rotateTheta = Math.toRadians(-30.0);
-                        FirstValue.setText(String.valueOf(firstSubjectSignal));
-                        SecondValue.setText(String.valueOf(secondSubjectSignal));
+                        FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                        SecondValue.setText(String.valueOf((int)secondSubjectSignal));
 
                         // Update score or finish the activity accordingly.
                         if (jProgressBarFirstSubjectScore.getValue() < 100)
@@ -1217,8 +1220,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         {
                             // Display absolute difference.
                             rotateTheta = Math.toRadians(30.0);
-                            FirstValue.setText(String.valueOf(firstSubjectSignal));
-                            SecondValue.setText(String.valueOf(secondSubjectSignal));                           
+                            FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                            SecondValue.setText(String.valueOf((int)secondSubjectSignal));                           
 
                             // Update score or finish the activity accordingly.
                             if (jProgressBarSecondSubjectScore.getValue() < 100)
@@ -1239,8 +1242,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                             if ((jProgressBarFirstSubjectScore.getValue() < 100) && (jProgressBarSecondSubjectScore.getValue() < 100))
                             {
                                 rotateTheta = Math.toRadians(difference * -1.0);
-                                FirstValue.setText(String.valueOf(firstSubjectSignal));
-                                SecondValue.setText(String.valueOf(secondSubjectSignal));  
+                                FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                                SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
                             }
                             else
                             {
@@ -1266,8 +1269,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     if (difference >= acceptedCollaborativeThreshold * -1 && difference <= acceptedCollaborativeThreshold)
                     {
                         rotateTheta = Math.toRadians(0);
-                        FirstValue.setText(String.valueOf(firstSubjectSignal));
-                        SecondValue.setText(String.valueOf(secondSubjectSignal));  
+                        FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                        SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
                         
                         count = true;
                     }
@@ -1276,8 +1279,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         if (difference > acceptedCollaborativeThreshold)
                         {
                             rotateTheta = Math.toRadians(-30);
-                            FirstValue.setText(String.valueOf(firstSubjectSignal));
-                            SecondValue.setText(String.valueOf(secondSubjectSignal));  
+                            FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                            SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
                             
                             //Stop timer.
                             count = false;
@@ -1286,8 +1289,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         if (difference < acceptedCollaborativeThreshold * -1.0)
                         {
                             rotateTheta = Math.toRadians(30);
-                            FirstValue.setText(String.valueOf(firstSubjectSignal));
-                            SecondValue.setText(String.valueOf(secondSubjectSignal));  
+                            FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                            SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
                             
                             //Stop timer.
                             count = false;
@@ -1310,8 +1313,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     {
                         // Display absolute difference.
                         rotateTheta = Math.toRadians(-30.0);
-                        FirstValue.setText(String.valueOf(firstSubjectSignal));
-                        SecondValue.setText(String.valueOf(secondSubjectSignal));  
+                        FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                        SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
 
                         // Update score or finish the activity accordingly.
                         if (jProgressBarFirstSubjectScore.getValue() < 100)
@@ -1333,8 +1336,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         {
                             // Display absolute difference.
                             rotateTheta = Math.toRadians(30.0);
-                            FirstValue.setText(String.valueOf(firstSubjectSignal));
-                            SecondValue.setText(String.valueOf(secondSubjectSignal));  
+                            FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                            SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
 
                             // Update score or finish the activity accordingly.
                             if (jProgressBarSecondSubjectScore.getValue() < 100)
@@ -1355,8 +1358,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                             if ((jProgressBarFirstSubjectScore.getValue() < 100) && (jProgressBarSecondSubjectScore.getValue() < 100))
                             {
                                 rotateTheta = Math.toRadians(difference * -1.0);
-                                FirstValue.setText(String.valueOf(firstSubjectSignal));
-                                SecondValue.setText(String.valueOf(secondSubjectSignal));  
+                                FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                                SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
                             }
                             else
                             {
@@ -1382,8 +1385,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     if (difference >= acceptedCollaborativeThreshold * -1 && difference <= acceptedCollaborativeThreshold)
                     {
                         rotateTheta = Math.toRadians(0);
-                        FirstValue.setText(String.valueOf(firstSubjectSignal));
-                        SecondValue.setText(String.valueOf(secondSubjectSignal));  
+                        FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                        SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
                         
                         count = true;
                     }
@@ -1392,8 +1395,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         if (difference > acceptedCollaborativeThreshold)
                         {
                             rotateTheta = Math.toRadians(-30);
-                            FirstValue.setText(String.valueOf(firstSubjectSignal));
-                            SecondValue.setText(String.valueOf(secondSubjectSignal));  
+                            FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                            SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
                             
                             //Stop timer.
                             count = false;
@@ -1402,8 +1405,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         if (difference < acceptedCollaborativeThreshold * -1.0)
                         {
                             rotateTheta = Math.toRadians(30);
-                            FirstValue.setText(String.valueOf(firstSubjectSignal));
-                            SecondValue.setText(String.valueOf(secondSubjectSignal));  
+                            FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                            SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
                             
                             //Stop timer.
                             count = false;
