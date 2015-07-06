@@ -28,6 +28,8 @@ import javax.swing.SwingWorker;
 /**
  *
  * @author Abdullah Garcia - abdullah.garcia@gmail.com
+ * @author Peilun Ling - ringpylon@gmail.com
+ * Brain Computer Interface window.
  */
 public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     /*
@@ -72,6 +74,13 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     private ScheduledExecutorService firstSubjectSimulator;
     private ScheduledExecutorService secondSubjectSimulator;
     
+     
+    /*
+    second way of executing is to buffer the Moving Average and calculate the
+    average of average again
+    */
+    //private Buffer circularFirstBuf = new CircularFifoBuffer(128);
+    //private Buffer circularSecondBuf = new CircularFifoBuffer(128);
     
     class ActivityPanel extends JPanel {
         public ActivityPanel() {
@@ -252,7 +261,10 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             
         }
     }
-    
+       
+    /**
+     * class of program
+     */
     public BrainComputerInterfaceGUI() {
         initComponents();
         
@@ -619,7 +631,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             
             exec.scheduleAtFixedRate(new Runnable() {
                 @Override
-                public void run() {
+                public void run() 
+                {
                     normaliseValues();
                     update(firstSubjectSignal, secondSubjectSignal);
                 }
@@ -629,7 +642,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         {
             exec.scheduleAtFixedRate(new Runnable() {
                 @Override
-                public void run() {
+                public void run() 
+                {
                     normaliseValues();
                     update(firstSubjectSignal, secondSubjectSignal);
                 }
@@ -932,6 +946,10 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         this.resetUpdater.execute();
     }//GEN-LAST:event_jButtonResetActionPerformed
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -964,12 +982,24 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     /*
     Matlab - GUI interaction methods.
     */
+
+    /**
+     *
+     * @param firstSubjectSignal
+     * get new value of inputing signal
+     */
+    
     public void updateFirstSubjectSignal(double firstSubjectSignal)
     {
         this.firstSubjectSignalUpdater = new FirstSubjectSignalUpdater(firstSubjectSignal);
         this.firstSubjectSignalUpdater.execute();
     }
     
+    /**
+     *
+     * @param secondSubjectSignal
+     * get new value of inputing signal
+     */
     public void updateSecondSubjectSignal(double secondSubjectSignal)
     {
         this.secondSubjectSignalUpdater = new SecondSubjectSignalUpdater(secondSubjectSignal);
@@ -1008,17 +1038,17 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         }
     }
     
-    /*
+    /**
     Signal processing methods.
-    */
-    /*
-    Peilun added. previous version of normalisation generating unfair pairing
-    The new normalization took place on Sub1, use the strength of Sub2 to 
-    compare, with a auto scale function,in this situation, Sub1 and Sub2 will always have
-    a output [10,100]. the exception value over 100 may conduct
-    overscale position(if previous input>1000) in minor situation, like putting
-    electrode on a strong power of elec-megnetitude environment.
-    */
+    * normalize  input values to 10-100 scale. 
+    * *******Peilun added. previous version of normalization generating unfair pairing
+    * The new normalization took place on Sub1, use the strength of Sub2 to 
+    * compare, with a auto scale function,in this situation, Sub1 and Sub2 will always have
+    * a output [10,100]. the exception value over 100 may conduct
+    * overscale position(if previous input>1000) in minor situation, like putting
+    * electrode on a strong power of elec-megnetitude environment.
+    * actual practice situation would in [0,10].
+    **/
     private void normaliseValues()
     {
         /*Less than zero case.*/
@@ -1107,6 +1137,14 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             }
         }
     }
+    
+    /**
+     * update function of signal comparing based on mode
+     * @param firstSubjectSignal
+     * the represent of first value
+     * @param secondSubjectSignal 
+     * the represent of second value
+     */
     
     private void update(double firstSubjectSignal, double secondSubjectSignal)
     {
