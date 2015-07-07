@@ -15,6 +15,7 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import javax.swing.Action;
 import javax.swing.GroupLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -73,7 +74,10 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     
     private ScheduledExecutorService firstSubjectSimulator;
     private ScheduledExecutorService secondSubjectSimulator;
-    
+      
+    // execution time stamp declare.
+    private long executionTime;
+    private long timeInterval;
      
     /*
     second way of executing is to buffer the Moving Average and calculate the
@@ -238,6 +242,17 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
 
             // Disable reset button.
             jButtonReset.setEnabled(false);
+            
+            //Enable stop button.
+            jButtonStop.setEnabled(true);
+            
+            //reset tip and text.
+            jProgressBarFirstSubject.setToolTipText("0");
+            jProgressBarSecondSubject.setToolTipText("0");
+            FirstValue.setText("0");
+            SecondValue.setText("0");
+            jLabelScore1.setText("0");
+            jLabelScore2.setText("0");
 
             // Attempt to shutdown any pending process.
             try
@@ -360,17 +375,17 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                updateFirstSubjectSignal(randomGenerator.nextInt(100));
+                updateFirstSubjectSignal( + randomGenerator.nextInt(5) + 0);
           }
-        }, 0, 500, TimeUnit.MILLISECONDS);
+        }, 0, 1, TimeUnit.MILLISECONDS);
         
         secondSubjectSimulator.scheduleAtFixedRate(new Runnable() {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                updateSecondSubjectSignal(randomGenerator.nextInt(100));
+                updateSecondSubjectSignal(randomGenerator.nextInt(5) + 0);
           }
-        }, 0, 500, TimeUnit.MILLISECONDS);
+        }, 0, 1, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -383,16 +398,19 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanelFirstSubject = new javax.swing.JPanel();
+        FirstValue = new javax.swing.JLabel();
         jProgressBarFirstSubject = new javax.swing.JProgressBar();
         jPanelActivityArea = new ActivityPanel();
         jPanelSecondSubject = new javax.swing.JPanel();
+        SecondValue = new javax.swing.JLabel();
         jProgressBarSecondSubject = new javax.swing.JProgressBar();
         jProgressBarFirstSubjectScore = new javax.swing.JProgressBar();
         jProgressBarSecondSubjectScore = new javax.swing.JProgressBar();
         jButtonReset = new javax.swing.JButton();
         jProgressBarCollaborativeScore = new javax.swing.JProgressBar();
-        FirstValue = new javax.swing.JLabel();
-        SecondValue = new javax.swing.JLabel();
+        jButtonStop = new javax.swing.JButton();
+        jLabelScore1 = new javax.swing.JLabel();
+        jLabelScore2 = new javax.swing.JLabel();
         jMenuBarGeneral = new javax.swing.JMenuBar();
         jMenuExperiment = new javax.swing.JMenu();
         jMenuTraining = new javax.swing.JMenu();
@@ -416,8 +434,22 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         jPanelFirstSubject.setName("firstSubjectPanel"); // NOI18N
         jPanelFirstSubject.setPreferredSize(new java.awt.Dimension(200, 500));
 
+        FirstValue.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        FirstValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        FirstValue.setLabelFor(FirstValue);
+        FirstValue.setText(String.valueOf(firstSubjectSignal)
+        );
+        FirstValue.setToolTipText("Current 1st Power Ratio");
+        FirstValue.setDoubleBuffered(true);
+        FirstValue.setMaximumSize(new java.awt.Dimension(50, 14));
+        FirstValue.setMinimumSize(new java.awt.Dimension(40, 14));
+
+        jProgressBarFirstSubject.setForeground(Color.RED);
         jProgressBarFirstSubject.setOrientation(1);
-        jProgressBarFirstSubject.setMinimumSize(new java.awt.Dimension(150, 400));
+        jProgressBarFirstSubject.setToolTipText("FirstSubject Power Ratio");
+        jProgressBarFirstSubject.setMaximumSize(new java.awt.Dimension(150, 32767));
+        jProgressBarFirstSubject.setMinimumSize(new java.awt.Dimension(50, 400));
+        jProgressBarFirstSubject.setPreferredSize(new java.awt.Dimension(150, 400));
 
         javax.swing.GroupLayout jPanelFirstSubjectLayout = new javax.swing.GroupLayout(jPanelFirstSubject);
         jPanelFirstSubject.setLayout(jPanelFirstSubjectLayout);
@@ -425,14 +457,18 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             jPanelFirstSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelFirstSubjectLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBarFirstSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+                .addGroup(jPanelFirstSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jProgressBarFirstSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                    .addComponent(FirstValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelFirstSubjectLayout.setVerticalGroup(
             jPanelFirstSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelFirstSubjectLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBarFirstSubject, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jProgressBarFirstSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(FirstValue, javax.swing.GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -444,7 +480,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         jPanelActivityArea.setLayout(jPanelActivityAreaLayout);
         jPanelActivityAreaLayout.setHorizontalGroup(
             jPanelActivityAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 729, Short.MAX_VALUE)
+            .addGap(0, 745, Short.MAX_VALUE)
         );
         jPanelActivityAreaLayout.setVerticalGroup(
             jPanelActivityAreaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -456,8 +492,20 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         jPanelSecondSubject.setName("secondSubjectPanel"); // NOI18N
         jPanelSecondSubject.setPreferredSize(new java.awt.Dimension(200, 500));
 
+        SecondValue.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        SecondValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        SecondValue.setLabelFor(SecondValue);
+        SecondValue.setText(String.valueOf(secondSubjectSignal)
+        );
+        SecondValue.setToolTipText("Current 2nd Power Ratio");
+        SecondValue.setMaximumSize(new java.awt.Dimension(50, 14));
+        SecondValue.setMinimumSize(new java.awt.Dimension(40, 14));
+
         jProgressBarSecondSubject.setOrientation(1);
-        jProgressBarSecondSubject.setMinimumSize(new java.awt.Dimension(150, 400));
+        jProgressBarSecondSubject.setToolTipText("SecondSubject Power Ratio");
+        jProgressBarSecondSubject.setMaximumSize(new java.awt.Dimension(150, 32767));
+        jProgressBarSecondSubject.setMinimumSize(new java.awt.Dimension(50, 400));
+        jProgressBarSecondSubject.setPreferredSize(new java.awt.Dimension(150, 400));
 
         javax.swing.GroupLayout jPanelSecondSubjectLayout = new javax.swing.GroupLayout(jPanelSecondSubject);
         jPanelSecondSubject.setLayout(jPanelSecondSubjectLayout);
@@ -465,22 +513,28 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             jPanelSecondSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelSecondSubjectLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBarSecondSubject, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelSecondSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jProgressBarSecondSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
+                    .addComponent(SecondValue, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelSecondSubjectLayout.setVerticalGroup(
             jPanelSecondSubjectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelSecondSubjectLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBarSecondSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
+                .addComponent(jProgressBarSecondSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 426, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(SecondValue, javax.swing.GroupLayout.DEFAULT_SIZE, 14, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jProgressBarFirstSubjectScore.setOrientation(1);
+        jProgressBarFirstSubjectScore.setToolTipText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
         jProgressBarFirstSubjectScore.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jProgressBarFirstSubjectScore.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jProgressBarSecondSubjectScore.setOrientation(1);
+        jProgressBarSecondSubjectScore.setToolTipText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
         jProgressBarSecondSubjectScore.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jButtonReset.setText("Reset");
@@ -491,22 +545,31 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             }
         });
 
-        FirstValue.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        FirstValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        FirstValue.setLabelFor(FirstValue);
-        FirstValue.setText(String.valueOf(firstSubjectSignal)
-        );
-        FirstValue.setDoubleBuffered(true);
-        FirstValue.setMaximumSize(new java.awt.Dimension(50, 14));
-        FirstValue.setMinimumSize(new java.awt.Dimension(40, 14));
+        jButtonStop.setFont(new java.awt.Font("Yu Gothic", 1, 12)); // NOI18N
+        jButtonStop.setForeground(new java.awt.Color(255, 0, 0));
+        jButtonStop.setText("STOP");
+        jButtonStop.setBorder(null);
+        jButtonStop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonStopActionPerformed(evt);
+            }
+        });
 
-        SecondValue.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        SecondValue.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        SecondValue.setLabelFor(SecondValue);
-        SecondValue.setText(String.valueOf(secondSubjectSignal)
-        );
-        SecondValue.setMaximumSize(new java.awt.Dimension(50, 14));
-        SecondValue.setMinimumSize(new java.awt.Dimension(40, 14));
+        jLabelScore1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelScore1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelScore1.setText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
+        jLabelScore1.setToolTipText("1st Score");
+        jLabelScore1.setMaximumSize(new java.awt.Dimension(50, 17));
+        jLabelScore1.setMinimumSize(new java.awt.Dimension(40, 17));
+        jLabelScore1.setPreferredSize(new java.awt.Dimension(50, 17));
+
+        jLabelScore2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelScore2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelScore2.setText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
+        jLabelScore2.setToolTipText("2nd Score");
+        jLabelScore2.setMaximumSize(new java.awt.Dimension(50, 17));
+        jLabelScore2.setMinimumSize(new java.awt.Dimension(40, 17));
+        jLabelScore2.setPreferredSize(new java.awt.Dimension(50, 17));
 
         jMenuBarGeneral.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
 
@@ -589,26 +652,28 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanelFirstSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                .addComponent(jPanelFirstSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jProgressBarFirstSubjectScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jProgressBarCollaborativeScore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanelActivityArea, javax.swing.GroupLayout.DEFAULT_SIZE, 741, Short.MAX_VALUE)
+                    .addComponent(jPanelActivityArea, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(FirstValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelScore1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(SecondValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLabelScore2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
                         .addComponent(jProgressBarSecondSubjectScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jPanelSecondSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
+                        .addComponent(jPanelSecondSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(174, 174, 174)
-                        .addComponent(jButtonReset, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButtonStop, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonReset, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -616,7 +681,9 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonReset, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButtonReset, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                        .addComponent(jButtonStop, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE))
                     .addComponent(jProgressBarCollaborativeScore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -625,15 +692,18 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     .addComponent(jPanelFirstSubject, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 502, Short.MAX_VALUE)
                     .addComponent(jProgressBarSecondSubjectScore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanelActivityArea, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+                        .addComponent(jPanelActivityArea, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(FirstValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(SecondValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jLabelScore1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelScore2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(8, 8, 8)))
                 .addContainerGap())
         );
 
         jPanelFirstSubject.getAccessibleContext().setAccessibleName("");
+        jLabelScore1.getAccessibleContext().setAccessibleName("jLabelScore1");
+        jLabelScore2.getAccessibleContext().setAccessibleName("jLabelScore2");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -815,6 +885,9 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         // Set mode.
         mode = 3;
         
+        //set current time
+        executionTime = System.currentTimeMillis();     
+        
         // Disable menu.
         jMenuExperiment.setEnabled(false);
         jMenuHelp.setEnabled(false);
@@ -832,7 +905,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     normaliseValues();
                     update(firstSubjectSignal, secondSubjectSignal);
                 }
-            }, 0, 500, TimeUnit.MILLISECONDS);
+            }, 0, 5, TimeUnit.MILLISECONDS);
         }
         else
         {
@@ -842,7 +915,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     normaliseValues();
                     update(firstSubjectSignal, secondSubjectSignal);
                 }
-            }, 0, 500, TimeUnit.MILLISECONDS);
+            }, 0, 5, TimeUnit.MILLISECONDS);
         }
     }//GEN-LAST:event_jMenuItemCompetitiveActionPerformed
 
@@ -977,8 +1050,16 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         this.resetUpdater.execute();
     }//GEN-LAST:event_jButtonResetActionPerformed
 
+    private void jButtonStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStopActionPerformed
+        // TODO add your handling code here:
+        exec.shutdownNow();
+        exec = null;
+        jButtonReset.setEnabled(true);
+        jButtonStop.setEnabled(false);       
+    }//GEN-LAST:event_jButtonStopActionPerformed
+
     /**
-     *
+     * application execution from here.
      * @param args
      */
     public static void main(String args[]) {
@@ -1308,6 +1389,9 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     // Calculate difference between signals.
                     difference = firstSubjectSignal - secondSubjectSignal;
                     
+                    //set time stamp 
+                    timeInterval = System.currentTimeMillis() - executionTime;
+                    
                     // Consider an absolute difference between values.
                     if (difference >= competitiveMinimumDifference)
                     {
@@ -1315,11 +1399,26 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         rotateTheta = Math.toRadians(-30.0);
                         FirstValue.setText(String.valueOf((int)firstSubjectSignal));
                         SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
+                        jProgressBarFirstSubject.setToolTipText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
+                        jProgressBarSecondSubject.setToolTipText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
+                        jProgressBarFirstSubject.setForeground(Color.CYAN);
+                        jProgressBarFirstSubject.setForeground(Color.RED);
 
                         // Update score or finish the activity accordingly.
                         if (jProgressBarFirstSubjectScore.getValue() < 100)
-                        {
-                            jProgressBarFirstSubjectScore.setValue((int) Math.round(jProgressBarFirstSubjectScore.getValue() + 100 / scoreRatio));
+                        {                                                        
+                            if (timeInterval < 1000)
+                            {
+                                //TODO - do nothing in this case                              
+                            }
+                            else
+                            {
+                                timeInterval = 0;
+                                executionTime = System.currentTimeMillis();
+                                jProgressBarFirstSubjectScore.setValue((int) Math.round(jProgressBarFirstSubjectScore.getValue() + 100 / scoreRatio));
+                                jLabelScore1.setText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
+                                jLabelScore2.setText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
+                            }                                                     
                         }
                         else
                         {
@@ -1338,11 +1437,26 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                             rotateTheta = Math.toRadians(30.0);
                             FirstValue.setText(String.valueOf((int)firstSubjectSignal));
                             SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
-
+                            jProgressBarFirstSubject.setToolTipText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
+                            jProgressBarSecondSubject.setToolTipText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
+                            jProgressBarFirstSubject.setForeground(Color.CYAN);
+                            jProgressBarFirstSubject.setForeground(Color.RED);
+                            
                             // Update score or finish the activity accordingly.
                             if (jProgressBarSecondSubjectScore.getValue() < 100)
                             {
-                                jProgressBarSecondSubjectScore.setValue((int) Math.round(jProgressBarSecondSubjectScore.getValue() + 100 / scoreRatio));
+                                if (timeInterval < 1000)
+                                {
+                                    //TODO - do nothing in this case                              
+                                }
+                                else
+                                {
+                                    timeInterval = 0;
+                                    executionTime = System.currentTimeMillis();
+                                    jProgressBarSecondSubjectScore.setValue((int) Math.round(jProgressBarSecondSubjectScore.getValue() + 100 / scoreRatio));
+                                    jLabelScore1.setText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
+                                    jLabelScore2.setText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
+                                }
                             }
                             else
                             {
@@ -1360,6 +1474,11 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                                 rotateTheta = Math.toRadians(difference * -1.0);
                                 FirstValue.setText(String.valueOf((int)firstSubjectSignal));
                                 SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
+                                jProgressBarFirstSubject.setToolTipText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
+                                jProgressBarSecondSubject.setToolTipText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
+                                jProgressBarFirstSubject.setForeground(Color.CYAN);
+                                jProgressBarFirstSubject.setForeground(Color.RED);
+ 
                             }
                             else
                             {
@@ -1492,6 +1611,9 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     private javax.swing.JLabel FirstValue;
     private javax.swing.JLabel SecondValue;
     private javax.swing.JButton jButtonReset;
+    private javax.swing.JButton jButtonStop;
+    private javax.swing.JLabel jLabelScore1;
+    private javax.swing.JLabel jLabelScore2;
     private javax.swing.JMenuBar jMenuBarGeneral;
     private javax.swing.JMenu jMenuExperiment;
     private javax.swing.JMenu jMenuFirstEmptySpace;
