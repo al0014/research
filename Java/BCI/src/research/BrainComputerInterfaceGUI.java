@@ -78,6 +78,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     // execution time stamp declare.
     private long executionTime;
     private long timeInterval;
+    private int stampOfValue = 0;
      
     /*
     second way of executing is to buffer the Moving Average and calculate the
@@ -253,6 +254,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             SecondValue.setText("0");
             jLabelScore1.setText("0");
             jLabelScore2.setText("0");
+            jLabelScore1.setVisible(false);
+            jLabelScore2.setVisible(false);
 
             // Attempt to shutdown any pending process.
             try
@@ -375,17 +378,17 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                updateFirstSubjectSignal( + randomGenerator.nextInt(5) + 0);
+                updateFirstSubjectSignal( + randomGenerator.nextInt(25) + 50);
           }
-        }, 0, 1, TimeUnit.MILLISECONDS);
+        }, 0, 500, TimeUnit.MILLISECONDS);
         
         secondSubjectSimulator.scheduleAtFixedRate(new Runnable() {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                updateSecondSubjectSignal(randomGenerator.nextInt(5) + 0);
+                updateSecondSubjectSignal(randomGenerator.nextInt(25) + 50);
           }
-        }, 0, 1, TimeUnit.MILLISECONDS);
+        }, 0, 500, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -894,6 +897,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
 
         // Display score bars.
         displayCompetitiveScoreBars();
+        jLabelScore1.setVisible(true);
+        jLabelScore2.setVisible(true);
         
         if (exec == null)
         {
@@ -930,6 +935,9 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         // Display score bars.
         displayCollaborativeScoreComponents();
         
+        //start time flag
+        executionTime = System.currentTimeMillis();
+        
         if (timerUpdater == null)
         {
             timerUpdater = Executors.newSingleThreadScheduledExecutor();
@@ -937,9 +945,9 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             timerUpdater.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-                    if (count)
+                    if (count && System.currentTimeMillis() - executionTime >= 1000)
                     {
-                        if (Integer.parseInt(jLabelTimer.getText()) == 5)
+                        if (Integer.parseInt(jLabelTimer.getText()) == 3)
                         {
                             if (jProgressBarCollaborativeScore.getValue() < 100)
                             {
@@ -948,6 +956,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                                 count = false;
 
                                 jLabelTimer.setText("0");
+                                executionTime = System.currentTimeMillis();
                             }
                             else
                             {
@@ -967,23 +976,29 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                             value = value + 1;
 
                             jLabelTimer.setText(String.valueOf(value));
+                            executionTime = System.currentTimeMillis();
                         }
+                    }
+                    else if (count)
+                    {
+                        //TODO
                     }
                     else
                     {
                         jLabelTimer.setText("0");
+                        executionTime = System.currentTimeMillis();
                     }
                 }
-            }, 0, 1, TimeUnit.SECONDS);
+            }, 0, 1, TimeUnit.MILLISECONDS);
         }
         else
         {
             timerUpdater.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                if (count)
+                if (count && System.currentTimeMillis() - executionTime >= 1000)
                 {
-                    if (Integer.parseInt(jLabelTimer.getText()) == 5)
+                    if (Integer.parseInt(jLabelTimer.getText()) == 3)
                     {
                         if (jProgressBarCollaborativeScore.getValue() < 100)
                         {
@@ -992,6 +1007,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                             count = false;
                             
                             jLabelTimer.setText("0");
+                            executionTime = System.currentTimeMillis();
                         }
                         else
                         {
@@ -1011,14 +1027,20 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         value = value + 1;
 
                         jLabelTimer.setText(String.valueOf(value));
+                        executionTime = System.currentTimeMillis();
                     }
+                }
+                else if (count)
+                {
+                    //TODO
                 }
                 else
                 {
                     jLabelTimer.setText("0");
+                    executionTime = System.currentTimeMillis();
                 }
             }
-        }, 0, 1, TimeUnit.SECONDS);
+        }, 0, 1, TimeUnit.MILLISECONDS);
         }
         
         if (exec == null)
@@ -1031,7 +1053,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     normaliseValues();
                     update(firstSubjectSignal, secondSubjectSignal);
                 }
-            }, 0, 500, TimeUnit.MILLISECONDS);
+            }, 0, 1, TimeUnit.MILLISECONDS);
         }
         else
         {
@@ -1041,7 +1063,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     normaliseValues();
                     update(firstSubjectSignal, secondSubjectSignal);
                 }
-            }, 0, 500, TimeUnit.MILLISECONDS);
+            }, 0, 1, TimeUnit.MILLISECONDS);
         }
     }//GEN-LAST:event_jMenuItemCollaborativeActionPerformed
 
@@ -1409,7 +1431,12 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         {                                                        
                             if (timeInterval < 1000)
                             {
-                                //TODO - do nothing in this case                              
+                                //TODO - flag convert case
+                                if (stampOfValue != 1)
+                                {
+                                    executionTime = System.currentTimeMillis();
+                                    stampOfValue = 1;
+                                } 
                             }
                             else
                             {
@@ -1447,7 +1474,12 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                             {
                                 if (timeInterval < 1000)
                                 {
-                                    //TODO - do nothing in this case                              
+                                    //TODO - do nothing in this case       
+                                    if (stampOfValue != 2)
+                                    {
+                                        executionTime = System.currentTimeMillis();
+                                        stampOfValue = 2;
+                                    } 
                                 }
                                 else
                                 {
@@ -1503,7 +1535,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     
                     if (difference >= acceptedCollaborativeThreshold * -1 && difference <= acceptedCollaborativeThreshold)
                     {
-                        rotateTheta = Math.toRadians(0);
+                        rotateTheta = Math.toRadians(difference * -1.0);
                         FirstValue.setText(String.valueOf((int)firstSubjectSignal));
                         SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
                         
@@ -1554,6 +1586,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         jProgressBarSecondSubjectScore.setVisible(false);
         jProgressBarCollaborativeScore.setVisible(false);
         jLabelTimer.setVisible(false);
+        jLabelScore1.setVisible(false);
+        jLabelScore2.setVisible(false);
     }
     
     private void resetAllScoreComponents()
@@ -1568,6 +1602,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     {
         jProgressBarFirstSubjectScore.setVisible(true);
         jProgressBarSecondSubjectScore.setVisible(true);
+        jLabelScore1.setVisible(true);
+        jLabelScore2.setVisible(true);
     }
     
     private void displayCollaborativeScoreComponents()
