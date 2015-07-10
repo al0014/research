@@ -1373,6 +1373,9 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     // Calculate difference between signals.
                     difference = firstSubjectSignal - secondSubjectSignal;
                     
+                    //set time stamp
+                    timeInterval = System.currentTimeMillis() - executionTime;
+                    
                     // Consider an absolute difference between values.
                     if (difference >= competitiveMinimumDifference)
                     {
