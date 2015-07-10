@@ -778,7 +778,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                 public void run() {
                     if (count)
                     {
-                        if (Integer.parseInt(jLabelTimer.getText()) == 5)
+                        if (Integer.parseInt(jLabelTimer.getText()) == 3)
                         {
                             if (jProgressBarCollaborativeScore.getValue() < 100)
                             {
@@ -813,7 +813,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         jLabelTimer.setText("0");
                     }
                 }
-            }, 0, 1, TimeUnit.SECONDS);
+            }, 0, 5, TimeUnit.MILLISECONDS);
         }
         else
         {
@@ -822,7 +822,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             public void run() {
                 if (count)
                 {
-                    if (Integer.parseInt(jLabelTimer.getText()) == 5)
+                    if (Integer.parseInt(jLabelTimer.getText()) == 3)
                     {
                         if (jProgressBarCollaborativeScore.getValue() < 100)
                         {
@@ -857,7 +857,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     jLabelTimer.setText("0");
                 }
             }
-        }, 0, 1, TimeUnit.SECONDS);
+        }, 0, 5, TimeUnit.MILLISECONDS);
         }
         
         if (exec == null)
@@ -870,7 +870,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     normaliseValues();
                     update(firstSubjectSignal, secondSubjectSignal);
                 }
-            }, 0, 500, TimeUnit.MILLISECONDS);
+            }, 0, 5, TimeUnit.MILLISECONDS);
         }
         else
         {
@@ -880,7 +880,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     normaliseValues();
                     update(firstSubjectSignal, secondSubjectSignal);
                 }
-            }, 0, 500, TimeUnit.MILLISECONDS);
+            }, 0, 5, TimeUnit.MILLISECONDS);
         }
     }//GEN-LAST:event_jMenuItemTrainingCollaborativeActionPerformed
 
