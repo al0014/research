@@ -244,8 +244,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             // Disable reset button.
             jButtonReset.setEnabled(false);
             
-            //Enable stop button.
-            jButtonStop.setEnabled(true);
+            //Disable stop button.
+            jButtonStop.setEnabled(false);
             
             //reset tip and text.
             jProgressBarFirstSubject.setToolTipText("0");
@@ -712,22 +712,28 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
-        JOptionPane.showMessageDialog(null, "EEG-based BCI was written by Abdullah Garcia.\nContact: abdullah.garcia@gmail.com", "About EEG-based BCI", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "EEG-based BCI window function.\n --written by Abdullah Garcia & Peilun Ling.\nContact: \nabdullah.garcia@gmail.com\nringpylon@gmail.com", "About:", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jMenuItemAboutActionPerformed
 
     private void jMenuItemTrainingCompetitiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTrainingCompetitiveActionPerformed
         // Set mode.
         mode = 1;
         
+        //Set current time
+        executionTime = System.currentTimeMillis();
+                
         // Set different score limit.
         setScoreLimitForTraining();
         
         // Disable menu.
         jMenuExperiment.setEnabled(false);
         jMenuHelp.setEnabled(false);
+        jButtonStop.setEnabled(true);
         
         // Display score bars.
         displayCompetitiveScoreBars();
+        jLabelScore1.setVisible(true);
+        jLabelScore2.setVisible(true);
         
         if (exec == null)
         {
@@ -740,7 +746,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     normaliseValues();
                     update(firstSubjectSignal, secondSubjectSignal);
                 }
-            }, 0, 500, TimeUnit.MILLISECONDS);
+            }, 0, 5, TimeUnit.MILLISECONDS);
         }
         else
         {
@@ -751,7 +757,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     normaliseValues();
                     update(firstSubjectSignal, secondSubjectSignal);
                 }
-            }, 0, 500, TimeUnit.MILLISECONDS);
+            }, 0, 5, TimeUnit.MILLISECONDS);
         }
     }//GEN-LAST:event_jMenuItemTrainingCompetitiveActionPerformed
 
@@ -765,6 +771,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         // Disable menu.
         jMenuExperiment.setEnabled(false);
         jMenuHelp.setEnabled(false);
+        jButtonStop.setEnabled(true);
         
         // Display score components.
         displayCollaborativeScoreComponents();
@@ -779,6 +786,12 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             timerUpdater.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
+                    if (jProgressBarCollaborativeScore.getValue() >= 100)
+                    {
+                        exec.shutdownNow();
+                        exec = null;
+                        jButtonReset.setEnabled(true);
+                    }
                     if (count && System.currentTimeMillis() - executionTime >= 1000)
                     {
                         if (Integer.parseInt(jLabelTimer.getText()) == 3)
@@ -830,6 +843,12 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             timerUpdater.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
+                    if (jProgressBarCollaborativeScore.getValue() >= 100)
+                    {
+                        exec.shutdownNow();
+                        exec = null;
+                        jButtonReset.setEnabled(true);
+                    }
                 if (count && System.currentTimeMillis() - executionTime >= 1000)
                 {
                     if (Integer.parseInt(jLabelTimer.getText()) == 3)
@@ -884,6 +903,12 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             exec.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
+                    if (jProgressBarCollaborativeScore.getValue() >= 100)
+                    {
+                        exec.shutdownNow();
+                        exec = null;
+                        jButtonReset.setEnabled(true);
+                    }
                     normaliseValues();
                     update(firstSubjectSignal, secondSubjectSignal);
                 }
@@ -894,6 +919,12 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             exec.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
+                    if (jProgressBarCollaborativeScore.getValue() >= 100)
+                    {
+                        exec.shutdownNow();
+                        exec = null;
+                        jButtonReset.setEnabled(true);
+                    }
                     normaliseValues();
                     update(firstSubjectSignal, secondSubjectSignal);
                 }
@@ -911,6 +942,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         // Disable menu.
         jMenuExperiment.setEnabled(false);
         jMenuHelp.setEnabled(false);
+        jButtonStop.setEnabled(true);
 
         // Display score bars.
         displayCompetitiveScoreBars();
@@ -948,6 +980,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         // Disable menu.
         jMenuExperiment.setEnabled(false);
         jMenuHelp.setEnabled(false);
+        jButtonStop.setEnabled(true);
         
         // Display score bars.
         displayCollaborativeScoreComponents();
@@ -962,6 +995,12 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             timerUpdater.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
+                    if (jProgressBarCollaborativeScore.getValue() >= 100)
+                    {
+                        exec.shutdownNow();
+                        exec = null;
+                        jButtonReset.setEnabled(true);
+                    }
                     if (count && System.currentTimeMillis() - executionTime >= 1000)
                     {
                         if (Integer.parseInt(jLabelTimer.getText()) == 3)
@@ -1013,6 +1052,12 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             timerUpdater.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
+                if (jProgressBarCollaborativeScore.getValue() >= 100)
+                    {
+                        exec.shutdownNow();
+                        exec = null;
+                        jButtonReset.setEnabled(true);
+                    }
                 if (count && System.currentTimeMillis() - executionTime >= 1000)
                 {
                     if (Integer.parseInt(jLabelTimer.getText()) == 3)
@@ -1067,6 +1112,12 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             exec.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
+                    if (jProgressBarCollaborativeScore.getValue() >= 100)
+                        {
+                            exec.shutdownNow();
+                            exec = null;
+                            jButtonReset.setEnabled(true);
+                        }
                     normaliseValues();
                     update(firstSubjectSignal, secondSubjectSignal);
                 }
@@ -1077,6 +1128,12 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             exec.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
+                    if (jProgressBarCollaborativeScore.getValue() >= 100)
+                        {
+                            exec.shutdownNow();
+                            exec = null;
+                            jButtonReset.setEnabled(true);
+                        }
                     normaliseValues();
                     update(firstSubjectSignal, secondSubjectSignal);
                 }
@@ -1323,12 +1380,30 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         rotateTheta = Math.toRadians(-30.0);
                         FirstValue.setText(String.valueOf((int)firstSubjectSignal));
                         SecondValue.setText(String.valueOf((int)secondSubjectSignal));
+                        jProgressBarFirstSubject.setToolTipText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
+                        jProgressBarSecondSubject.setToolTipText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
+                        jProgressBarFirstSubject.setForeground(Color.GREEN);
+                        jProgressBarSecondSubject.setForeground(Color.ORANGE);
 
                         // Update score or finish the activity accordingly.
                         if (jProgressBarFirstSubjectScore.getValue() < 100)
-                        {
-                            jProgressBarFirstSubjectScore.setValue((int) Math.round(jProgressBarFirstSubjectScore.getValue() + 100 / scoreRatio));
-                        }
+                            if(timeInterval < 1000)
+                            {
+                                //TODO flag convert case
+                                if(stampOfValue != 1)
+                                {
+                                    executionTime = System.currentTimeMillis();
+                                    stampOfValue = 1;
+                                }
+                            }
+                            else
+                            {
+                                timeInterval = 0;
+                                executionTime = System.currentTimeMillis();
+                                jProgressBarFirstSubjectScore.setValue((int) Math.round(jProgressBarFirstSubjectScore.getValue() + 100 / scoreRatio));
+                                jLabelScore1.setText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
+                                jLabelScore2.setText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
+                            }
                         else
                         {
                             exec.shutdownNow();
@@ -1345,12 +1420,32 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                             // Display absolute difference.
                             rotateTheta = Math.toRadians(30.0);
                             FirstValue.setText(String.valueOf((int)firstSubjectSignal));
-                            SecondValue.setText(String.valueOf((int)secondSubjectSignal));                           
+                            SecondValue.setText(String.valueOf((int)secondSubjectSignal));    
+                            jProgressBarFirstSubject.setToolTipText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
+                            jProgressBarSecondSubject.setToolTipText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
+                            jProgressBarFirstSubject.setForeground(Color.GREEN);
+                            jProgressBarSecondSubject.setForeground(Color.ORANGE);
 
                             // Update score or finish the activity accordingly.
                             if (jProgressBarSecondSubjectScore.getValue() < 100)
                             {
-                                jProgressBarSecondSubjectScore.setValue((int) Math.round(jProgressBarSecondSubjectScore.getValue() + 100 / scoreRatio));
+                                if(timeInterval < 1000)
+                                {
+                                    //TODO
+                                    if (stampOfValue != 2)
+                                    {
+                                        executionTime = System.currentTimeMillis();
+                                        stampOfValue = 2;
+                                    }
+                                }
+                                else
+                                {
+                                    timeInterval = 0;
+                                    executionTime = System.currentTimeMillis();
+                                    jProgressBarSecondSubjectScore.setValue((int) Math.round(jProgressBarSecondSubjectScore.getValue() + 100 / scoreRatio));
+                                    jLabelScore1.setText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
+                                    jLabelScore2.setText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
+                                }                           
                             }
                             else
                             {
@@ -1368,6 +1463,10 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                                 rotateTheta = Math.toRadians(difference * -1.0);
                                 FirstValue.setText(String.valueOf((int)firstSubjectSignal));
                                 SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
+                                jProgressBarFirstSubject.setToolTipText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
+                                jProgressBarSecondSubject.setToolTipText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
+                                jProgressBarFirstSubject.setForeground(Color.GREEN);
+                                jProgressBarSecondSubject.setForeground(Color.ORANGE);
                             }
                             else
                             {
@@ -1598,6 +1697,10 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             
             this.firstSubjectSignal = 0.0;
             this.secondSubjectSignal = 0.0;
+        }
+        else 
+        {
+            //TODO            
         }
     }
     
