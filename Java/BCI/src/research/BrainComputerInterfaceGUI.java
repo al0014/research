@@ -378,7 +378,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                updateFirstSubjectSignal( + randomGenerator.nextInt(5) + 50);
+                updateFirstSubjectSignal( + randomGenerator.nextInt(35) + 50);
           }
         }, 0, 50, TimeUnit.MILLISECONDS);
         
@@ -386,7 +386,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                updateSecondSubjectSignal(randomGenerator.nextInt(5) + 50);
+                updateSecondSubjectSignal(randomGenerator.nextInt(35) + 50);
           }
         }, 0, 50, TimeUnit.MILLISECONDS);
     }
@@ -1364,169 +1364,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         {
             switch (mode)
             {
-                // Training competitive.
-                case 1:
-                    displayCompetitiveScoreBars();
-                    
-                    adjustMaxValueForBars(firstSubjectSignal, secondSubjectSignal);
-                    
-                    // Calculate difference between signals.
-                    difference = firstSubjectSignal - secondSubjectSignal;
-                    
-                    //set time stamp
-                    timeInterval = System.currentTimeMillis() - executionTime;
-                    
-                    // Consider an absolute difference between values.
-                    if (difference >= competitiveMinimumDifference)
-                    {
-                        // Display absolute difference.
-                        rotateTheta = Math.toRadians(-30.0);
-                        FirstValue.setText(String.valueOf((int)firstSubjectSignal));
-                        SecondValue.setText(String.valueOf((int)secondSubjectSignal));
-                        jProgressBarFirstSubject.setToolTipText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
-                        jProgressBarSecondSubject.setToolTipText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
-                        jProgressBarFirstSubject.setForeground(Color.GREEN);
-                        jProgressBarSecondSubject.setForeground(Color.ORANGE);
-
-                        // Update score or finish the activity accordingly.
-                        if (jProgressBarFirstSubjectScore.getValue() < 100)
-                            if(timeInterval < 1000)
-                            {
-                                //TODO flag convert case
-                                if(stampOfValue != 1)
-                                {
-                                    executionTime = System.currentTimeMillis();
-                                    stampOfValue = 1;
-                                }
-                            }
-                            else
-                            {
-                                timeInterval = 0;
-                                executionTime = System.currentTimeMillis();
-                                jProgressBarFirstSubjectScore.setValue((int) Math.round(jProgressBarFirstSubjectScore.getValue() + 100 / scoreRatio));
-                                jLabelScore1.setText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
-                                jLabelScore2.setText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
-                            }
-                        else
-                        {
-                            exec.shutdownNow();
-                            exec = null;
-                            
-                            jButtonReset.setEnabled(true);
-                        }
-                    }
-                    else
-                    {
-                        // Consider an absolute difference between values.
-                        if (difference <= competitiveMinimumDifference * -1.0)
-                        {
-                            // Display absolute difference.
-                            rotateTheta = Math.toRadians(30.0);
-                            FirstValue.setText(String.valueOf((int)firstSubjectSignal));
-                            SecondValue.setText(String.valueOf((int)secondSubjectSignal));    
-                            jProgressBarFirstSubject.setToolTipText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
-                            jProgressBarSecondSubject.setToolTipText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
-                            jProgressBarFirstSubject.setForeground(Color.GREEN);
-                            jProgressBarSecondSubject.setForeground(Color.ORANGE);
-
-                            // Update score or finish the activity accordingly.
-                            if (jProgressBarSecondSubjectScore.getValue() < 100)
-                            {
-                                if(timeInterval < 1000)
-                                {
-                                    //TODO
-                                    if (stampOfValue != 2)
-                                    {
-                                        executionTime = System.currentTimeMillis();
-                                        stampOfValue = 2;
-                                    }
-                                }
-                                else
-                                {
-                                    timeInterval = 0;
-                                    executionTime = System.currentTimeMillis();
-                                    jProgressBarSecondSubjectScore.setValue((int) Math.round(jProgressBarSecondSubjectScore.getValue() + 100 / scoreRatio));
-                                    jLabelScore1.setText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
-                                    jLabelScore2.setText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
-                                }                           
-                            }
-                            else
-                            {
-                                exec.shutdownNow();
-                                exec = null;
-                                
-                                jButtonReset.setEnabled(true);
-                            }
-                        }
-                        else
-                        {
-                            // Assuming there isn't an absolute difference, update accordingly. However, keep track of scores.
-                            if ((jProgressBarFirstSubjectScore.getValue() < 100) && (jProgressBarSecondSubjectScore.getValue() < 100))
-                            {
-                                rotateTheta = Math.toRadians(difference * -1.0);
-                                FirstValue.setText(String.valueOf((int)firstSubjectSignal));
-                                SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
-                                jProgressBarFirstSubject.setToolTipText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
-                                jProgressBarSecondSubject.setToolTipText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
-                                jProgressBarFirstSubject.setForeground(Color.GREEN);
-                                jProgressBarSecondSubject.setForeground(Color.ORANGE);
-                            }
-                            else
-                            {
-                                exec.shutdownNow();
-                                exec = null;
-                                
-                                jButtonReset.setEnabled(true);
-                            }
-                        }
-                    }
-                    
-                    break;
-                    
-                // Training collaborative.
-                case 2:
-                    displayCollaborativeScoreComponents();
-                            
-                    adjustMaxValueForBars(firstSubjectSignal, secondSubjectSignal);
-                    
-                    // Calculate difference between signals.
-                    difference = firstSubjectSignal - secondSubjectSignal;
-                    
-                    if (difference >= acceptedCollaborativeThreshold * -1 && difference <= acceptedCollaborativeThreshold)
-                    {
-                        rotateTheta = Math.toRadians(difference * -1.0);
-                        FirstValue.setText(String.valueOf((int)firstSubjectSignal));
-                        SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
-                        
-                        count = true;
-                    }
-                    else
-                    {
-                        if (difference > acceptedCollaborativeThreshold)
-                        {
-                            rotateTheta = Math.toRadians(-30);
-                            FirstValue.setText(String.valueOf((int)firstSubjectSignal));
-                            SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
-                            
-                            //Stop timer.
-                            count = false;
-                        }
-                        
-                        if (difference < acceptedCollaborativeThreshold * -1.0)
-                        {
-                            rotateTheta = Math.toRadians(30);
-                            FirstValue.setText(String.valueOf((int)firstSubjectSignal));
-                            SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
-                            
-                            //Stop timer.
-                            count = false;
-                        }
-                    }
-                    
-                    break;
-                
                 // Competitive.
-                case 3:
+                case 3: case 1:
                     displayCompetitiveScoreBars();
                     
                     adjustMaxValueForBars(firstSubjectSignal, secondSubjectSignal);
@@ -1546,8 +1385,6 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
                         jProgressBarFirstSubject.setToolTipText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
                         jProgressBarSecondSubject.setToolTipText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
-                        jProgressBarFirstSubject.setForeground(Color.CYAN);
-                        jProgressBarFirstSubject.setForeground(Color.RED);
 
                         // Update score or finish the activity accordingly.
                         if (jProgressBarFirstSubjectScore.getValue() < 100)
@@ -1589,8 +1426,6 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                             SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
                             jProgressBarFirstSubject.setToolTipText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
                             jProgressBarSecondSubject.setToolTipText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
-                            jProgressBarFirstSubject.setForeground(Color.CYAN);
-                            jProgressBarFirstSubject.setForeground(Color.RED);
                             
                             // Update score or finish the activity accordingly.
                             if (jProgressBarSecondSubjectScore.getValue() < 100)
@@ -1631,8 +1466,6 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                                 SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
                                 jProgressBarFirstSubject.setToolTipText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
                                 jProgressBarSecondSubject.setToolTipText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
-                                jProgressBarFirstSubject.setForeground(Color.CYAN);
-                                jProgressBarFirstSubject.setForeground(Color.RED);
  
                             }
                             else
@@ -1648,7 +1481,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     break;
                     
                 // Collaborative.
-                case 4:
+                case 4: case 2:
                     displayCollaborativeScoreComponents();
                             
                     adjustMaxValueForBars(firstSubjectSignal, secondSubjectSignal);
