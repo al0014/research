@@ -378,17 +378,17 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                updateFirstSubjectSignal( + randomGenerator.nextInt(35) + 50);
+                updateFirstSubjectSignal( + randomGenerator.nextInt(5) + 50);
           }
-        }, 0, 50, TimeUnit.MILLISECONDS);
+        }, 0, 250, TimeUnit.MILLISECONDS);
         
         secondSubjectSimulator.scheduleAtFixedRate(new Runnable() {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                updateSecondSubjectSignal(randomGenerator.nextInt(35) + 50);
+                updateSecondSubjectSignal(randomGenerator.nextInt(5) + 50);
           }
-        }, 0, 50, TimeUnit.MILLISECONDS);
+        }, 0, 250, TimeUnit.MILLISECONDS);
     }
 
     /**
