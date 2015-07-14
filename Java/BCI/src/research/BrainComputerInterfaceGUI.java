@@ -371,7 +371,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         exec = Executors.newSingleThreadScheduledExecutor();
         timerUpdater = Executors.newSingleThreadScheduledExecutor();
         
-        firstSubjectSimulator = Executors.newSingleThreadScheduledExecutor();
+        /*firstSubjectSimulator = Executors.newSingleThreadScheduledExecutor();
         secondSubjectSimulator = Executors.newSingleThreadScheduledExecutor();
         
         firstSubjectSimulator.scheduleAtFixedRate(new Runnable() {
@@ -388,7 +388,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                 Random randomGenerator = new Random();
                 updateSecondSubjectSignal(randomGenerator.nextInt(5) + 50);
           }
-        }, 0, 250, TimeUnit.MILLISECONDS);
+        }, 0, 250, TimeUnit.MILLISECONDS);*/
     }
 
     /**
