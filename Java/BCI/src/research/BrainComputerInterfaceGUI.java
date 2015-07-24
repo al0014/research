@@ -371,24 +371,24 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         exec = Executors.newSingleThreadScheduledExecutor();
         timerUpdater = Executors.newSingleThreadScheduledExecutor();
         
-        /*firstSubjectSimulator = Executors.newSingleThreadScheduledExecutor();
+        firstSubjectSimulator = Executors.newSingleThreadScheduledExecutor();
         secondSubjectSimulator = Executors.newSingleThreadScheduledExecutor();
         
         firstSubjectSimulator.scheduleAtFixedRate(new Runnable() {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                updateFirstSubjectSignal( + randomGenerator.nextInt(5) + 50);
+                //updateFirstSubjectSignal( + randomGenerator.nextInt(8) + 2);
           }
-        }, 0, 250, TimeUnit.MILLISECONDS);
+        }, 0, 5, TimeUnit.MILLISECONDS);
         
         secondSubjectSimulator.scheduleAtFixedRate(new Runnable() {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                updateSecondSubjectSignal(randomGenerator.nextInt(5) + 50);
+                //updateSecondSubjectSignal(randomGenerator.nextInt(8) + 2);
           }
-        }, 0, 250, TimeUnit.MILLISECONDS);*/
+        }, 0, 5, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -794,7 +794,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     }
                     if (count && System.currentTimeMillis() - executionTime >= 1000)
                     {
-                        if (Integer.parseInt(jLabelTimer.getText()) == 3)
+                        if (Integer.parseInt(jLabelTimer.getText()) == 1)
                         {
                             if (jProgressBarCollaborativeScore.getValue() < 100)
                             {
@@ -851,7 +851,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     }
                 if (count && System.currentTimeMillis() - executionTime >= 1000)
                 {
-                    if (Integer.parseInt(jLabelTimer.getText()) == 3)
+                    if (Integer.parseInt(jLabelTimer.getText()) == 1)
                     {
                         if (jProgressBarCollaborativeScore.getValue() < 100)
                         {
@@ -1003,7 +1003,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     }
                     if (count && System.currentTimeMillis() - executionTime >= 1000)
                     {
-                        if (Integer.parseInt(jLabelTimer.getText()) == 3)
+                        if (Integer.parseInt(jLabelTimer.getText()) == 1)
                         {
                             if (jProgressBarCollaborativeScore.getValue() < 100)
                             {
@@ -1060,7 +1060,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     }
                 if (count && System.currentTimeMillis() - executionTime >= 1000)
                 {
-                    if (Integer.parseInt(jLabelTimer.getText()) == 3)
+                    if (Integer.parseInt(jLabelTimer.getText()) == 1)
                     {
                         if (jProgressBarCollaborativeScore.getValue() < 100)
                         {
@@ -1225,7 +1225,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                             JOptionPane.PLAIN_MESSAGE,
                             new ImageIcon(),
                             possibilities,
-                            "20");
+                            "5");
         
         switch (selectedOption)
         {
@@ -1252,7 +1252,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     
     /**
     Signal processing methods.
-    * normalize  input values to 10-100 scale. 
+    * normalize input values to 10-100 scale. 
     * *******Peilun added. previous version of normalization generating unfair pairing
     * The new normalization took place on Sub1, use the strength of Sub2 to 
     * compare, with a auto scale function,in this situation, Sub1 and Sub2 will always have
@@ -1292,7 +1292,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                 }
                 firstSubjectSignal = firstSubjectSignal * 100.0;
                 /*
-                too small situation
+                too small situation, even expand 100 times the number is still less than 10
                 */
                 if (firstSubjectSignal < 10)
                 {
