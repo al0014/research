@@ -11,6 +11,8 @@ import java.awt.Polygon;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.geom.Line2D;
+import java.io.*;
+import java.net.*;
 import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -799,6 +801,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                             if (jProgressBarCollaborativeScore.getValue() < 100)
                             {
                                 jProgressBarCollaborativeScore.setValue((int) Math.round(jProgressBarCollaborativeScore.getValue() + 100 / scoreRatio));
+                                sendFlag();
 
                                 count = false;
 
@@ -856,6 +859,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         if (jProgressBarCollaborativeScore.getValue() < 100)
                         {
                             jProgressBarCollaborativeScore.setValue((int) Math.round(jProgressBarCollaborativeScore.getValue() + 100 / scoreRatio));
+                            sendFlag();
                             
                             count = false;
                             
@@ -1008,6 +1012,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                             if (jProgressBarCollaborativeScore.getValue() < 100)
                             {
                                 jProgressBarCollaborativeScore.setValue((int) Math.round(jProgressBarCollaborativeScore.getValue() + 100 / scoreRatio));
+                                sendFlag();
 
                                 count = false;
 
@@ -1065,6 +1070,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                         if (jProgressBarCollaborativeScore.getValue() < 100)
                         {
                             jProgressBarCollaborativeScore.setValue((int) Math.round(jProgressBarCollaborativeScore.getValue() + 100 / scoreRatio));
+                            sendFlag();
                             
                             count = false;
                             
@@ -1405,6 +1411,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                                 jProgressBarFirstSubjectScore.setValue((int) Math.round(jProgressBarFirstSubjectScore.getValue() + 100 / scoreRatio));
                                 jLabelScore1.setText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
                                 jLabelScore2.setText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
+                                sendFlag();
                             }                                                     
                         }
                         else
@@ -1446,6 +1453,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                                     jProgressBarSecondSubjectScore.setValue((int) Math.round(jProgressBarSecondSubjectScore.getValue() + 100 / scoreRatio));
                                     jLabelScore1.setText(String.valueOf(jProgressBarFirstSubjectScore.getValue()));
                                     jLabelScore2.setText(String.valueOf(jProgressBarSecondSubjectScore.getValue()));
+                                    sendFlag();
                                 }
                             }
                             else
@@ -1603,6 +1611,30 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         this.jProgressBarSecondSubject.setValue((int) Math.round(signal));
     }
 
+    private void sendFlag()
+    {
+        //TODO
+        try{
+            String host = "localhost";
+            int port = 8080;
+            byte[] message = "1".getBytes();
+            //address
+            InetAddress address = InetAddress.getByName(host);
+            //initiallization package
+            DatagramPacket packet = new DatagramPacket(message, message.length, address, port);
+            
+            try (DatagramSocket dsocket = new DatagramSocket()) {
+                dsocket.send(packet);
+                System.out.println("success " + (System.currentTimeMillis()-executionTime));
+            }
+            
+        }catch (Exception e){
+            System.err.println(e);
+        }
+        
+        
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel FirstValue;
     private javax.swing.JLabel SecondValue;
