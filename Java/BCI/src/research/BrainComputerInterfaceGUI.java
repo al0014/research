@@ -80,14 +80,9 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     // execution time stamp declare.
     private long executionTime;
     private long timeInterval;
+    private long startTime;
     private int stampOfValue = 0;
      
-    /*
-    second way of executing is to buffer the Moving Average and calculate the
-    average of average again
-    */
-    //private Buffer circularFirstBuf = new CircularFifoBuffer(128);
-    //private Buffer circularSecondBuf = new CircularFifoBuffer(128);
     
     class ActivityPanel extends JPanel {
         public ActivityPanel() {
@@ -380,7 +375,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                //updateFirstSubjectSignal( + randomGenerator.nextInt(8) + 2);
+                //updateFirstSubjectSignal(randomGenerator.nextFloat()/10+0.5);
           }
         }, 0, 5, TimeUnit.MILLISECONDS);
         
@@ -388,7 +383,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                //updateSecondSubjectSignal(randomGenerator.nextInt(8) + 2);
+                //updateSecondSubjectSignal(randomGenerator.nextFloat()/10+0.1);
           }
         }, 0, 5, TimeUnit.MILLISECONDS);
     }
@@ -416,12 +411,18 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         jButtonStop = new javax.swing.JButton();
         jLabelScore1 = new javax.swing.JLabel();
         jLabelScore2 = new javax.swing.JLabel();
+        execTimer = new javax.swing.JLabel();
         jMenuBarGeneral = new javax.swing.JMenuBar();
         jMenuExperiment = new javax.swing.JMenu();
         jMenuTraining = new javax.swing.JMenu();
         jMenuItemTrainingCompetitive = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         jMenuItemTrainingCollaborative = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        endlessTask = new javax.swing.JMenu();
+        timeCompetitiveTask = new javax.swing.JMenuItem();
+        jSeparator5 = new javax.swing.JPopupMenu.Separator();
+        timeCollaborativeTask = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItemCompetitive = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
@@ -576,6 +577,11 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         jLabelScore2.setMinimumSize(new java.awt.Dimension(40, 17));
         jLabelScore2.setPreferredSize(new java.awt.Dimension(50, 17));
 
+        execTimer.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        execTimer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        execTimer.setText("Timer");
+        execTimer.setToolTipText("execution Task Time");
+
         jMenuBarGeneral.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
 
         jMenuExperiment.setText("Experiment");
@@ -604,6 +610,31 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         jMenuTraining.add(jMenuItemTrainingCollaborative);
 
         jMenuExperiment.add(jMenuTraining);
+        jMenuExperiment.add(jSeparator4);
+
+        endlessTask.setText("Endless Training");
+        endlessTask.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+
+        timeCompetitiveTask.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        timeCompetitiveTask.setText("Competitive");
+        timeCompetitiveTask.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timeCompetitiveTaskActionPerformed(evt);
+            }
+        });
+        endlessTask.add(timeCompetitiveTask);
+        endlessTask.add(jSeparator5);
+
+        timeCollaborativeTask.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        timeCollaborativeTask.setText("Collaborative");
+        timeCollaborativeTask.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timeCollaborativeTaskActionPerformed(evt);
+            }
+        });
+        endlessTask.add(timeCollaborativeTask);
+
+        jMenuExperiment.add(endlessTask);
         jMenuExperiment.add(jSeparator1);
 
         jMenuItemCompetitive.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
@@ -657,7 +688,9 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanelFirstSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelFirstSubject, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                    .addComponent(execTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jProgressBarFirstSubjectScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -689,7 +722,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jButtonReset, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
                         .addComponent(jButtonStop, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE))
-                    .addComponent(jProgressBarCollaborativeScore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jProgressBarCollaborativeScore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(execTimer))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jProgressBarFirstSubjectScore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -722,6 +756,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         mode = 1;
         
         //Set current time
+        startTime = System.currentTimeMillis();
         executionTime = System.currentTimeMillis();
                 
         // Set different score limit.
@@ -774,7 +809,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         jMenuExperiment.setEnabled(false);
         jMenuHelp.setEnabled(false);
         jButtonStop.setEnabled(true);
-        
+        startTime = System.currentTimeMillis();
         // Display score components.
         displayCollaborativeScoreComponents();
         
@@ -941,6 +976,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         mode = 3;
         
         //set current time
+        startTime = System.currentTimeMillis();
         executionTime = System.currentTimeMillis();     
         
         // Disable menu.
@@ -990,6 +1026,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         displayCollaborativeScoreComponents();
         
         //start time flag
+        startTime = System.currentTimeMillis();
         executionTime = System.currentTimeMillis();
         
         if (timerUpdater == null)
@@ -1150,6 +1187,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     private void jButtonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonResetActionPerformed
         this.resetUpdater = new ResetUpdater();
         this.resetUpdater.execute();
+        execTimer.setVisible(false);
     }//GEN-LAST:event_jButtonResetActionPerformed
 
     private void jButtonStopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStopActionPerformed
@@ -1159,6 +1197,134 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         jButtonReset.setEnabled(true);
         jButtonStop.setEnabled(false);       
     }//GEN-LAST:event_jButtonStopActionPerformed
+
+    private void timeCollaborativeTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeCollaborativeTaskActionPerformed
+        // TODO add your handling code here:
+        // Set mode.
+        mode = 6;       
+        // Disable menu.
+        jMenuExperiment.setEnabled(false);
+        jMenuHelp.setEnabled(false);
+        jButtonStop.setEnabled(true);
+        jLabelTimer.setVisible(true);
+        //start time flag
+        startTime = System.currentTimeMillis();
+        executionTime = System.currentTimeMillis();        
+        if (timerUpdater == null)
+        {
+            timerUpdater = Executors.newSingleThreadScheduledExecutor();           
+            timerUpdater.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    if (count && System.currentTimeMillis() - executionTime >= 1000)
+                    {
+                        sendFlag();
+                        count = false;
+                        int value = Integer.parseInt(jLabelTimer.getText());
+                        value = value + 1;
+                        jLabelTimer.setText(String.valueOf(value));
+                        executionTime = System.currentTimeMillis();
+                    }
+                    else if (count)
+                    {
+                        //TODO
+                    }
+                    else
+                    {
+                        executionTime = System.currentTimeMillis();
+                    }
+                }
+            }, 0, 5, TimeUnit.MILLISECONDS);
+        }
+        else
+        {
+            timerUpdater.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {               
+                if (count && System.currentTimeMillis() - executionTime >= 1000)
+                {
+                    sendFlag();
+                    count = false;
+                    int value = Integer.parseInt(jLabelTimer.getText());
+                    value = value + 1;
+                    jLabelTimer.setText(String.valueOf(value));
+                    executionTime = System.currentTimeMillis();
+                }
+                else if (count)
+                {
+                    //TODO
+                }
+                else
+                {
+                    executionTime = System.currentTimeMillis();
+                }
+            }
+        }, 0, 5, TimeUnit.MILLISECONDS);
+        }
+        
+        if (exec == null)
+        {
+            exec = Executors.newSingleThreadScheduledExecutor();
+            
+            exec.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    normaliseValues();
+                    update(firstSubjectSignal, secondSubjectSignal);
+                }
+            }, 0, 5, TimeUnit.MILLISECONDS);
+        }
+        else
+        {
+            exec.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    normaliseValues();
+                    update(firstSubjectSignal, secondSubjectSignal);
+                }
+            }, 0, 5, TimeUnit.MILLISECONDS);
+        }
+    }//GEN-LAST:event_timeCollaborativeTaskActionPerformed
+
+    private void timeCompetitiveTaskActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeCompetitiveTaskActionPerformed
+        // TODO add your handling code here:      
+        // Set mode.
+        mode = 5;       
+        //set current time
+        startTime = System.currentTimeMillis();
+        executionTime = System.currentTimeMillis();     
+        
+        // Disable menu.
+        jMenuExperiment.setEnabled(false);
+        jMenuHelp.setEnabled(false);
+        jButtonStop.setEnabled(true);
+        // Display score bars.
+        jLabelScore1.setVisible(true);
+        jLabelScore2.setVisible(true);      
+        if (exec == null)
+        {
+            exec = Executors.newSingleThreadScheduledExecutor();
+            
+            exec.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    normaliseValues();
+                    update(firstSubjectSignal, secondSubjectSignal);
+                }
+            }, 0, 5, TimeUnit.MILLISECONDS);
+        }
+        else
+        {
+            exec.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    normaliseValues();
+                    update(firstSubjectSignal, secondSubjectSignal);
+                }
+            }, 0, 5, TimeUnit.MILLISECONDS);
+        }
+        
+    }//GEN-LAST:event_timeCompetitiveTaskActionPerformed
 
     /**
      * application execution from here.
@@ -1260,12 +1426,11 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     Signal processing methods.
     * normalize input values to 10-100 scale. 
     * *******Peilun added. previous version of normalization generating unfair pairing
-    * The new normalization took place on Sub1, use the strength of Sub2 to 
-    * compare, with a auto scale function,in this situation, Sub1 and Sub2 will always have
-    * a output [10,100]. the exception value over 100 may conduct
-    * overscale position(if previous input>1000) in minor situation, like putting
-    * electrode on a strong power of electromagnetic field environment.
-    * actual practice situation would in [0,10].
+    * new feature about normalization.
+    * delete all previous norm function. new function would consider only the realistic
+    * situation that control signal between [0,1].
+    * all other situation would be throw to 1 or 100 these two values.   
+    * actual practice situation would in [0,1].
     **/
     private void normaliseValues()
     {
@@ -1285,74 +1450,28 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         /*Restructure if statement.*/
         if (firstSubjectSignal > 0 && secondSubjectSignal > 0)
         {
-            // Normalise values to tenths.
-            if (firstSubjectSignal < 1)
-            {    
-                if (secondSubjectSignal >= 1)
-                {                
-                    secondSubjectSignal = 100;
-                }
-                else 
-                {
-                    secondSubjectSignal = secondSubjectSignal * 100.0;
-                }
-                firstSubjectSignal = firstSubjectSignal * 100.0;
-                /*
-                too small situation, even expand 100 times the number is still less than 10
-                */
-                if (firstSubjectSignal < 10)
-                {
-                    firstSubjectSignal = 9;
-                }
-                if (secondSubjectSignal < 10)
-                {
-                    secondSubjectSignal = 9;
-                }
-                    
-            }
-            else if (firstSubjectSignal < 10)
+            // times 100.
+            firstSubjectSignal = firstSubjectSignal * 100.0;
+            secondSubjectSignal = secondSubjectSignal * 100.0;
+            if (firstSubjectSignal < 1.0)
             {
-                if (secondSubjectSignal >= 10)
-                {
-                    secondSubjectSignal = 100;
-                }
-                else
-                {
-                    secondSubjectSignal = secondSubjectSignal * 10.0;
-                }
-                /*
-                in situation of Sub2 < 1, when we enhance Sub1(between [1,9]),
-                give a constant value of 9 to Sub2.
-                */
-                if (secondSubjectSignal < 10)
-                {
-                    secondSubjectSignal = 9;
-                }
-                firstSubjectSignal = firstSubjectSignal * 10.0;
+                firstSubjectSignal = 1.0;
             }
-            else if (firstSubjectSignal > 100)
+            if (secondSubjectSignal < 1.0)
             {
-                if (secondSubjectSignal < 100)
-                {
-                    secondSubjectSignal = 9;
-                }
-                else
-                {
-                    secondSubjectSignal = secondSubjectSignal / 10.0;
-                }              
-                firstSubjectSignal = firstSubjectSignal / 10.0;
-                /*
-                too large situation
-                */
-                if (firstSubjectSignal > 100)
-                {
-                    firstSubjectSignal = 100;
-                }
-                if (secondSubjectSignal > 100)
-                {
-                    secondSubjectSignal = 100;
-                }
+                secondSubjectSignal = 1.0;
+            }                      
+            /*
+            too large situation
+            */
+            if (firstSubjectSignal > 100)
+            {
+                firstSubjectSignal = 100;
             }
+            if (secondSubjectSignal > 100)
+            {
+                secondSubjectSignal = 100;
+            }           
         }
     }
     
@@ -1368,12 +1487,83 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     {
         if (firstSubjectSignal != 0.0 && secondSubjectSignal != 0.0)
         {
+            execTimer.setVisible(true);
+            executionTime();
             switch (mode)
             {
                 // Competitive.
-                case 3: case 1:
-                    displayCompetitiveScoreBars();
+                case 5: 
+                    // Calculate difference between signals.
+                    difference = firstSubjectSignal - secondSubjectSignal;                    
+                    //set time stamp 
+                    timeInterval = System.currentTimeMillis() - executionTime;                   
+                    // Consider an absolute difference between values.
+                    if (difference >= competitiveMinimumDifference)
+                    {
+                        // Display absolute difference.
+                        rotateTheta = Math.toRadians(-competitiveMinimumDifference);
+                        FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                        SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
+                        // Update score or finish the activity accordingly.                       
+                            if (timeInterval < 1000)
+                            {
+                                //TODO - flag convert case
+                                if (stampOfValue != 1)
+                                {
+                                    executionTime = System.currentTimeMillis();
+                                    stampOfValue = 1;
+                                } 
+                            }
+                            else
+                            {
+                                timeInterval = 0;
+                                executionTime = System.currentTimeMillis();
+                                jLabelScore1.setText(String.valueOf(Integer.parseInt(jLabelScore1.getText())+1));
+                                sendFlag();
+                            }                                                                             
+                    }
+                    else
+                    {
+                        // Consider an absolute difference between values.
+                        if (difference <= competitiveMinimumDifference * -1.0)
+                        {
+                            // Display absolute difference.
+                            rotateTheta = Math.toRadians(competitiveMinimumDifference);
+                            FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                            SecondValue.setText(String.valueOf((int)secondSubjectSignal));                             
+                            // Update score or finish the activity accordingly.
+                                if (timeInterval < 1000)
+                                {
+                                    //TODO - do nothing in this case       
+                                    if (stampOfValue != 2)
+                                    {
+                                        executionTime = System.currentTimeMillis();
+                                        stampOfValue = 2;
+                                    } 
+                                }
+                                else
+                                {
+                                    timeInterval = 0;
+                                    executionTime = System.currentTimeMillis();
+                                    jLabelScore2.setText(String.valueOf(Integer.parseInt(jLabelScore2.getText())+1));
+                                    sendFlag();
+                                }
+
+                        }
+                        else
+                        {
+                            // Assuming there isn't an absolute difference
+                            rotateTheta = Math.toRadians(difference * -1.0);
+                            FirstValue.setText(String.valueOf((int)firstSubjectSignal));
+                            SecondValue.setText(String.valueOf((int)secondSubjectSignal));  
+
+                        }
+                    }                    
+                    break;
                     
+                case 3: case 1:
+                    
+                    displayCompetitiveScoreBars();                   
                     adjustMaxValueForBars(firstSubjectSignal, secondSubjectSignal);
                     
                     // Calculate difference between signals.
@@ -1489,8 +1679,11 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                     break;
                     
                 // Collaborative.
-                case 4: case 2:
-                    displayCollaborativeScoreComponents();
+                case 6: case 4: case 2:
+                    if (mode != 6)
+                    {
+                        displayCollaborativeScoreComponents();
+                    } 
                             
                     adjustMaxValueForBars(firstSubjectSignal, secondSubjectSignal);
                     
@@ -1564,6 +1757,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         jProgressBarSecondSubjectScore.setValue(0);
         jProgressBarCollaborativeScore.setValue(0);
         jLabelTimer.setText("");
+        
     }
     
     private void displayCompetitiveScoreBars()
@@ -1635,9 +1829,16 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         
     }
     
+    private void executionTime()
+    {
+        execTimer.setText(String.valueOf((System.currentTimeMillis() - startTime)/1000) + " Secs");
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel FirstValue;
     private javax.swing.JLabel SecondValue;
+    private javax.swing.JMenu endlessTask;
+    private javax.swing.JLabel execTimer;
     private javax.swing.JButton jButtonReset;
     private javax.swing.JButton jButtonStop;
     private javax.swing.JLabel jLabelScore1;
@@ -1664,5 +1865,9 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JPopupMenu.Separator jSeparator5;
+    private javax.swing.JMenuItem timeCollaborativeTask;
+    private javax.swing.JMenuItem timeCompetitiveTask;
     // End of variables declaration//GEN-END:variables
 }

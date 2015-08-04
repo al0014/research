@@ -51,6 +51,42 @@
                 </MenuItem>
               </SubComponents>
             </Menu>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
+            </MenuItem>
+            <Menu class="javax.swing.JMenu" name="endlessTask">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Endless Training"/>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="20" style="0"/>
+                </Property>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="timeCompetitiveTask">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="20" style="0"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Competitive"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="timeCompetitiveTaskActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator5">
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="timeCollaborativeTask">
+                  <Properties>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="Segoe UI" size="20" style="0"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Collaborative"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="timeCollaborativeTaskActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItemCompetitive">
@@ -145,7 +181,10 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanelFirstSubject" pref="216" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jPanelFirstSubject" pref="216" max="32767" attributes="0"/>
+                  <Component id="execTimer" max="32767" attributes="0"/>
+              </Group>
               <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
               <Component id="jProgressBarFirstSubjectScore" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -179,13 +218,14 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jButtonReset" alignment="3" pref="45" max="32767" attributes="0"/>
                       <Component id="jButtonStop" alignment="3" pref="45" max="32767" attributes="0"/>
                   </Group>
                   <Component id="jProgressBarCollaborativeScore" max="32767" attributes="0"/>
+                  <Component id="execTimer" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -513,6 +553,16 @@
       <AccessibilityProperties>
         <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="jLabelScore2"/>
       </AccessibilityProperties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="execTimer">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="24" style="0"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="Timer"/>
+        <Property name="toolTipText" type="java.lang.String" value="execution Task Time"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
