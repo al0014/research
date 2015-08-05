@@ -64,8 +64,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     
     private int mode = 0;
     private double scoreRatio = 20.0;
-    private final double competitiveMinimumDifference = 30.0;
-    private final double acceptedCollaborativeThreshold = 10.0;
+    private final double competitiveMinimumDifference = 20.0;
+    private final double acceptedCollaborativeThreshold = 7.5;
     
     private FirstSubjectSignalUpdater firstSubjectSignalUpdater;
     private SecondSubjectSignalUpdater secondSubjectSignalUpdater;
@@ -383,7 +383,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                //updateSecondSubjectSignal(randomGenerator.nextFloat()/10+0.1);
+                //updateSecondSubjectSignal(randomGenerator.nextFloat()/10);
           }
         }, 0, 5, TimeUnit.MILLISECONDS);
     }
