@@ -375,7 +375,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                //updateFirstSubjectSignal(randomGenerator.nextFloat()/10+0.5);
+                //updateFirstSubjectSignal((randomGenerator.nextFloat()/10+10)/10-0.1);
           }
         }, 0, 5, TimeUnit.MILLISECONDS);
         
@@ -383,7 +383,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
           @Override
           public void run() {
                 Random randomGenerator = new Random();
-                //updateSecondSubjectSignal(randomGenerator.nextFloat()/10);
+                //updateSecondSubjectSignal((randomGenerator.nextFloat()/10+10)/10-0.1);
           }
         }, 0, 5, TimeUnit.MILLISECONDS);
     }
@@ -424,6 +424,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         timeCollaborativeTask = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jMenuPractice = new javax.swing.JMenu();
         jMenuItemCompetitive = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jMenuItemCollaborative = new javax.swing.JMenuItem();
@@ -612,7 +613,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         jMenuExperiment.add(jMenuTraining);
         jMenuExperiment.add(jSeparator4);
 
-        endlessTask.setText("Endless Training");
+        endlessTask.setText("Endless Mode");
         endlessTask.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
 
         timeCompetitiveTask.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
@@ -637,6 +638,9 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
         jMenuExperiment.add(endlessTask);
         jMenuExperiment.add(jSeparator1);
 
+        jMenuPractice.setText("Practise Mode");
+        jMenuPractice.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+
         jMenuItemCompetitive.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jMenuItemCompetitive.setText("Competitive");
         jMenuItemCompetitive.addActionListener(new java.awt.event.ActionListener() {
@@ -644,8 +648,8 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                 jMenuItemCompetitiveActionPerformed(evt);
             }
         });
-        jMenuExperiment.add(jMenuItemCompetitive);
-        jMenuExperiment.add(jSeparator2);
+        jMenuPractice.add(jMenuItemCompetitive);
+        jMenuPractice.add(jSeparator2);
 
         jMenuItemCollaborative.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jMenuItemCollaborative.setText("Collaborative");
@@ -654,7 +658,9 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
                 jMenuItemCollaborativeActionPerformed(evt);
             }
         });
-        jMenuExperiment.add(jMenuItemCollaborative);
+        jMenuPractice.add(jMenuItemCollaborative);
+
+        jMenuExperiment.add(jMenuPractice);
 
         jMenuBarGeneral.add(jMenuExperiment);
 
@@ -748,7 +754,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAboutActionPerformed
-        JOptionPane.showMessageDialog(null, "EEG-based BCI window function.\n --written by Abdullah Garcia & Peilun Ling.\nContact: \nabdullah.garcia@gmail.com\nringpylon@gmail.com", "About:", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "EEG-based BCI window function.\n --written by Peilun Ling.\nContact: \nringpylon@gmail.com", "About:", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jMenuItemAboutActionPerformed
 
     private void jMenuItemTrainingCompetitiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemTrainingCompetitiveActionPerformed
@@ -1852,6 +1858,7 @@ public class BrainComputerInterfaceGUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemCompetitive;
     private javax.swing.JMenuItem jMenuItemTrainingCollaborative;
     private javax.swing.JMenuItem jMenuItemTrainingCompetitive;
+    private javax.swing.JMenu jMenuPractice;
     private javax.swing.JMenu jMenuSecondEmptySpace;
     private javax.swing.JMenu jMenuTraining;
     private javax.swing.JPanel jPanelActivityArea;
